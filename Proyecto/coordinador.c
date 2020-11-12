@@ -14,7 +14,7 @@ struct task {
 };	
 typedef struct task *tTask; // estructura de las tareas
 struct info_task {
-	char type;
+	int type;
 	struct task tarea;
 }; typedef struct info_task *tInfo; // estructura de los mensajes del creador de tareas
 
@@ -34,8 +34,8 @@ void creador_tareas(int cant_tareas){
 	int i = 0;
 	while(i<cant_tareas){
 		tarea_info = malloc(sizeof(struct info_task));
-		printf("Ingrese el tipo de tarea: ");
-		scanf("%s",&(tarea_info->type));
+		printf("\nIngrese el tipo de tarea: ");
+		scanf("%",(tarea_info->type));
 		printf("Tipo de tarea ingresado; %c\n",tarea_info->type);
 		printf("Ingrese el tipo de trabajo: ");
 		scanf("%d",&(tarea_info->tarea.type_work));
@@ -109,7 +109,7 @@ void coordinador(int cant_tareas){
 		int i = 0;
 		tInfo tipo_task;
 		while (i<cant_tareas){
-			read(pipe_tareas[0],&tipo_task,sizeof(struct info_task));
+			read(pipe_tareas[0],tipo_task,sizeof(struct info_task));
 			printf("Leo una tarea de tipo:%c\n",(tipo_task->type));
 			if(tipo_task->type == 'a'){
 				write(pipe_a[1],&tipo_task->tarea,sizeof(struct task));
@@ -160,7 +160,7 @@ int main(){
 				exit(EXIT_FAILURE);
 			}
 			else
-				if(pid_tb == 0){ // estoy en el hijo que hace la tarea a
+				if(pid_tb == 0){ // estoy en el hijo que hace la tarea b
 					tarea_b();
 				}
 				else{ //estoy en el padre									
@@ -170,7 +170,7 @@ int main(){
 						exit(EXIT_FAILURE);
 					}
 					else
-						if(pid_tc == 0){ // estoy en el hijo que hace la tarea a
+						if(pid_tc == 0){ // estoy en el hijo que hace la tarea c
 							tarea_c();
 						}
 						else{ //estoy en el padre
@@ -178,7 +178,7 @@ int main(){
 							int tareas = 10;
 							int i = 0;
 							int termine = 0;
-							while (i < tareas){
+							//while (i < tareas){
 								tareas = ((random() % 3) + 4);
 								creador_tareas(tareas);
 								coordinador(tareas);
@@ -189,7 +189,7 @@ int main(){
 									termine++;
 								}
 								termine = 0;
-							}
+							//}
 							
 						}
 					}
