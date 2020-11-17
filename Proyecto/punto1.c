@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #define TIME_UNIT 1
+
 char colores[6][10] = {"Blanco","Negro","Rojo","Azul","Amarillo"};
 struct mensaje{
 	int cantidad;
@@ -45,54 +46,67 @@ msj_t crear_tarea_c(int cant_tareas){
 	ret->informacion = ((random() % 5)+1);
 	return ret;
 }
+
 void coordinador_principal(){
 		int terminados = 0;
 		int numero_tareas=0;
+		msj_t ret;
 		while(1){
 			numero_tareas = ((random() % 3) + 4);
-			printf("La cantidad de tareas es:%i\n\n",numero_tareas);
-			switch(numero_tareas){
-				case 4 : 
-					write(pipe_a[1],crear_tarea_a(),sizeof(struct mensaje));
-					write(pipe_a[1],crear_tarea_a(),sizeof(struct mensaje));
-					write(pipe_b[1],crear_tarea_b(1),sizeof(struct mensaje));
-					write(pipe_c[1],crear_tarea_c(1),sizeof(struct mensaje));
-				case 5 :
-					
-					write(pipe_a[1],crear_tarea_a(),sizeof(struct mensaje));
-					write(pipe_a[1],crear_tarea_a(),sizeof(struct mensaje));
-					write(pipe_b[1],crear_tarea_b(1),sizeof(struct mensaje));
-					write(pipe_c[1],crear_tarea_c(2),sizeof(struct mensaje));
-					write(pipe_c[1],crear_tarea_c(2),sizeof(struct mensaje));
-				case 6 :
-					write(pipe_a[1],crear_tarea_a(),sizeof(struct mensaje));
-					write(pipe_a[1],crear_tarea_a(),sizeof(struct mensaje));
-					write(pipe_b[1],crear_tarea_b(2),sizeof(struct mensaje));
-					write(pipe_b[1],crear_tarea_b(2),sizeof(struct mensaje));
-					write(pipe_c[1],crear_tarea_c(2),sizeof(struct mensaje));
-					write(pipe_c[1],crear_tarea_c(2),sizeof(struct mensaje));
-				//default:;
-					//printf("La cantidad de tareas no es correcta");
+			printf("\nLa cantidad de tareas es:%i\n",numero_tareas);
+			if(numero_tareas == 4){
+				ret = crear_tarea_a();
+				write(pipe_a[1],ret,sizeof(struct mensaje));
+				ret = crear_tarea_a();
+				write(pipe_a[1],ret,sizeof(struct mensaje));
+				ret = crear_tarea_b(1);
+				write(pipe_b[1],ret,sizeof(struct mensaje));
+				ret = crear_tarea_c(1);
+				write(pipe_c[1],ret,sizeof(struct mensaje));
 			}
-			sleep(5);
-			//close(pipe_a[1]);
-			//close(pipe_b[1]);
-			//close(pipe_c[1]);
-			
-			int i;
+			else
+				if(numero_tareas == 5){
+					ret = crear_tarea_a();
+					write(pipe_a[1],ret,sizeof(struct mensaje));
+					ret = crear_tarea_a();
+					write(pipe_a[1],ret,sizeof(struct mensaje));
+					ret = crear_tarea_b(1);
+					write(pipe_b[1],ret,sizeof(struct mensaje));
+					ret = crear_tarea_c(2);
+					write(pipe_c[1],ret,sizeof(struct mensaje));
+					ret = crear_tarea_c(2);
+					write(pipe_c[1],ret,sizeof(struct mensaje));
+				}
+				else 
+					if(numero_tareas == 6){
+						ret = crear_tarea_a();
+						write(pipe_a[1],ret,sizeof(struct mensaje));
+						ret = crear_tarea_a();
+						write(pipe_a[1],ret,sizeof(struct mensaje));
+						ret = crear_tarea_b(2);
+						write(pipe_b[1],ret,sizeof(struct mensaje));
+						ret = crear_tarea_b(2);
+						write(pipe_b[1],ret,sizeof(struct mensaje));
+						ret = crear_tarea_c(2);
+						write(pipe_c[1],ret,sizeof(struct mensaje));
+						ret = crear_tarea_c(2);
+						write(pipe_c[1],ret,sizeof(struct mensaje));
+					}
+					else{
+						printf("El numero de tareas es invalido\nW");
+						exit(3);
+					}
+			int i=0;
 			while(terminados < numero_tareas){
 				read(pipe_final[0],&i,sizeof(int));
-				printf("La cantidad de Tareas terminadas es: %i\n", terminados+1);
-				//sleep(3);
 				terminados++;
 			}
+			printf("La cantidad de Tareas terminadas es: %i\n", terminados);
 			terminados = 0;
-			//printf("Cumpli\n");
-			sleep(10);
-			//printf("Me cago en la instruccion dormir\n");
-			
+			//sleep(1);		//este sleep es para poder ver mejor la ejecucion
 		}
 }
+
 void* tarea_a(void* args){
 	msj_t tarea = args;
 	enum tipos_tareas {Parcial=1, Total};
@@ -164,28 +178,28 @@ void* tarea_c(void* args){
 	pthread_exit(ret);
 	return ret;
 }
+
 void coordinador_a(){
 	while(1){
 		int cant_tareas = 1;
-		pthread_t hilos_a[cant_tareas];
 		int i = 0;
+		pthread_t *hilos_a;
 		while(i<cant_tareas){
 			msj_t tarea_corriente = malloc(sizeof(struct mensaje));
 			if(tarea_corriente == NULL)
 				exit(1);
 			read(pipe_a[0],tarea_corriente,sizeof(struct mensaje));
 			cant_tareas = tarea_corriente->cantidad;
+			hilos_a = malloc(sizeof(cant_tareas *sizeof(pthread_t)));
 			pthread_create(&hilos_a[i],NULL,tarea_a,tarea_corriente);
 			i++;
-			printf("Leo por vez %i\n",i);
 		}
-		printf("la cantidad de tareas de tipo A a realizar es: %d\n",cant_tareas);
+		printf("Se estan realizando %d tareas de tipo A\n",cant_tareas);
 		i=0;
 		while(i<cant_tareas){
 			pthread_join(hilos_a[i],NULL);
 			write(pipe_final[1],&i,sizeof(int));
 			i++;
-			printf("Termine la tarea A :%i\n", i);
 		}
 		
 	}
@@ -193,56 +207,52 @@ void coordinador_a(){
 void coordinador_b(){
 	while(1){
 		int cant_tareas = 1;
-		pthread_t hilos_b[cant_tareas];
 		int i = 0;
+		pthread_t *hilos_b;
 		while(i<cant_tareas){
 			msj_t tarea_corriente = malloc(sizeof(struct mensaje));
 			if(tarea_corriente == NULL)
 				exit(1);
 			read(pipe_b[0],tarea_corriente,sizeof(struct mensaje));
 			cant_tareas = tarea_corriente->cantidad;
+			hilos_b = malloc(sizeof(cant_tareas *sizeof(pthread_t)));
 			pthread_create(&hilos_b[i],NULL,tarea_b,tarea_corriente);
 			i++;
-			printf("Leo por vez %i\n",i);
 		}
-		printf("la cantidad de tareas de tipo B a realizar es: %d\n",cant_tareas);
+		printf("Se estan realizando %d tareas de tipo B\n",cant_tareas);		
 		i=0;
 		while(i<cant_tareas){
 			pthread_join(hilos_b[i],NULL);
 			write(pipe_final[1],&i,sizeof(int));
 			i++;
-			printf("Termine una tarea B:%i\n",i);
-			
 		}
 	}
 }
 void coordinador_c(){
 	while(1){
 		int cant_tareas = 1;
-		pthread_t hilos_c[cant_tareas];
 		int i = 0;
+		pthread_t *hilos_c;
 		while(i<cant_tareas){
 			msj_t tarea_corriente = malloc(sizeof(struct mensaje));
 			if(tarea_corriente == NULL)
 				exit(1);
 			read(pipe_c[0],tarea_corriente,sizeof(struct mensaje));
 			cant_tareas = tarea_corriente->cantidad;
+			hilos_c = malloc(sizeof(cant_tareas*sizeof(pthread_t)));
 			pthread_create(&hilos_c[i],NULL,tarea_c,tarea_corriente);
 			i++;
-			printf("Leo por vez %i\n",i);
-			
 		}
-		printf("la cantidad de tareas de tipo C a realizar es: %d\n",cant_tareas);
+		printf("Se estan realizando %d tareas de tipo C\n",cant_tareas);
 		i=0;
 		while(i<cant_tareas){
 			pthread_join(hilos_c[i],NULL);
 			write(pipe_final[1],&i,sizeof(int));
-			i++;
-			printf("Termine una tarea C:%i\n",i);
-			
+			i++;			
 		}
 	}
 }
+
 int main(){
 	srand(time(NULL));
 	pipe(pipe_a);
