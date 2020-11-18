@@ -6,3 +6,6 @@
 #include <sys/time.h>
 #include <pthread.h>
 #include <unistd.h>
+sem_t cocineros;
+sem_t listos;
+sem_t mesas;
