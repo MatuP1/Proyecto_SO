@@ -129,7 +129,6 @@ void* tarea_a(void* args){
 	void * ret=NULL;
 	free(args);
 	pthread_exit(ret);
-	return ret;
 }
 void* tarea_b(void* args){
 	msj_t tarea = args;
@@ -152,7 +151,6 @@ void* tarea_b(void* args){
 	void * ret=NULL;
 	free(args);
 	pthread_exit(ret);
-	return ret;
 }
 void* tarea_c(void* args){
 	msj_t tarea = args;
@@ -176,7 +174,6 @@ void* tarea_c(void* args){
 	void * ret=NULL;
 	free(args);
 	pthread_exit(ret);
-	return ret;
 }
 
 void coordinador_a(){

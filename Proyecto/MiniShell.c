@@ -109,6 +109,7 @@ void modificarPermisos(char *nombre, char *modo){
 int main(){
 	//El tamaño maximo de los comandos es de 20 caracteres al igual que los nombres de archivos o directorios.
 	char action[20];
+	printf("Bienvenido a la Mini Shell de Santiago y Matias, Ingrese sus comandos\n");
 	while(!(strcmp(action, "exit") ==0)){
 		//Lee de la consola el comando a ejecutar.
 		scanf("%s", action);
