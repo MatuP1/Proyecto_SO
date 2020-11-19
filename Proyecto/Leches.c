@@ -59,7 +59,7 @@ void *companiero(void *C){
 				}
 			}
 		else{
-			printf("%i : %s : Hay leche, y tome 1.\n",tiempoActual, nombre);
+			printf("%i : %s : Hay leche, y toma 1.\n",tiempoActual, nombre);
 			sleep(Tespera);
 			sem_post(&leche);
 		}	
