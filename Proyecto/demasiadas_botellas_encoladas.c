@@ -53,6 +53,7 @@ void companiero(int tiempo,int compa,int queue,int cantCompanieros){
 			//printf("%i : %i : Miro el refrigerador....\n",tiempoActual,compa);
 			sleep(Tespera);//Revisa la heladera. 
 			if (recibio > -1){//Hay leche y la toma.
+				recibio = 0;
 				tiempoActual= time(NULL) -tiempo; 
 				printf("%i : %i : Hay leche, y la tomo.\n",tiempoActual, compa);
 				sleep(2*Tespera);//Toma la leche
@@ -65,6 +66,7 @@ void companiero(int tiempo,int compa,int queue,int cantCompanieros){
 				printf("%i : %i : No hay leche.\n",tiempoActual,compa);
 				int comprar = msgrcv(queue,&messRCV,SIZE_MSG,TYPE_1,IPC_NOWAIT); //Alguien fue a comprar?
 				if(comprar > -1){
+					comprar = 0;
 					//Va a comprar
 					sleep(Tespera);//Viajando al supermercado Dia%.
 					printf("%i : %i : Voy a comprar.\n",tiempoActual,compa);
@@ -100,7 +102,10 @@ int main(){
 		report_and_exit("msgget");
 	}
 	
-	
+	if(pid>0){
+		messSND.type = TYPE_2;
+		msgsnd(queueID,&messSND,SIZE_MSG,IPC_NOWAIT);
+	}
 	
 	int tiempoInicial= time(NULL);
 	int aux= 0;
@@ -111,10 +116,7 @@ int main(){
 			}
 			
 	}
-	if(pid>0){
-		messSND.type = TYPE_2;
-		msgsnd(queueID,&messSND,SIZE_MSG,IPC_NOWAIT);
-	}
+	
 	if(pid == 0){
 		companiero(tiempoInicial,aux+1,queueID,n);
 	}
