@@ -41,19 +41,16 @@ void *companiero(void *C){
 	printf("%i : Nacio el compañero %s.\n",tiempoActual,nombre);
 	sleep(Tespera);
 	while(1){
-		if(sem_trywait(&HayLeche)){
-		
-		
-		
+		if(sem_trywait(&HayLeche)){	
+			printf("%i : %s : Mira el refrigerador...;.\n",tiempoActual,nombre);
 			if(sem_trywait(&leche)){
 				tiempoActual = time(NULL) - tiempoIn;
 				printf("%i : %s : No hay leche, pero otro fue a comprar.\n",tiempoActual, nombre);
-				sleep(5*Tespera);
+				sleep(Tespera);
 			}
 			else{
 				tiempoActual = time(NULL) - tiempoIn;
-				printf("%i : %s : Mira el refrigerador; no hay leche.\n",tiempoActual,nombre);
-				sleep(Tespera);
+				printf("%i : %s : No hay leche, fui a comprar.\n",tiempoActual, nombre);
 				comprarLeche(nombre,tiempoIn);
 				}
 			}
