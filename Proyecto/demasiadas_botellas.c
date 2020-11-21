@@ -14,7 +14,6 @@ struct paramThread {
 	int tim;
 	char *compa;
 };
-//Aasdasd
 
 void comprarLeche(char *C, int tiempo){
 	int tActual;

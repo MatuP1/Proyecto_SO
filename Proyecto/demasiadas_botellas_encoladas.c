@@ -15,11 +15,6 @@
 #define TYPE_3 3L
 #define Tespera 2
 
-
-//Tipos
-//Tipo1 = no hay leche.(igual al semaforo Leche)
-//Tipo2 = Haytomar leche.(igual al semaforo HayLeche)
-//Tipo3 = Termino de comprar
 struct message{
 	
 	long type;
@@ -48,7 +43,6 @@ void comprarLeche(int C, int tiempo){
 }
 
 void companiero(int tiempo,int compa,int queue,int cantCompanieros){
-		printf("Nacio el compañero : %i\n", compa);
 		SMS messRCV;
 		SMS messSNDT1;
 		SMS messSNDT2;
@@ -102,6 +96,7 @@ void companiero(int tiempo,int compa,int queue,int cantCompanieros){
 int main(){
 	SMS messSND;
 	int n=0;
+	printf("Ingrese la cantidad de compañeros\n");
 	scanf("%d",&n);
 	printf("Numero de compañeros : %i\n",n);
 	
