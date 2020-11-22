@@ -63,7 +63,7 @@ void companiero(int tiempo,int compa,int queue,int cantCompanieros){
 			}
 			else{//No hay leche
 				tiempoActual= time(NULL) -tiempo;	
-				printf("%i : %i : No hay leche.\n",tiempoActual,compa);
+				//printf("%i : %i : No hay leche.\n",tiempoActual,compa);
 				int comprar = msgrcv(queue,&messRCV,SIZE_MSG,TYPE_1,IPC_NOWAIT); //Alguien fue a comprar?
 				if(comprar > -1){
 					comprar = 0;
@@ -98,6 +98,8 @@ int main(){
 	}
 	
 	int queueID = msgget(key, 0666 | IPC_CREAT);
+	msgctl(queueID,IPC_RMID,NULL);
+	queueID = msgget(key, 0666 | IPC_CREAT);
 	if(queueID<0){
 		report_and_exit("msgget");
 	}
