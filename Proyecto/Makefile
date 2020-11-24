@@ -28,7 +28,7 @@ comida_rapida_encolada: comida_rapida_encolada.o
 comida_rapida_encolada.o: src/comida_rapida_encolada.c
 	gcc  -lpthread -Wall -c src/comida_rapida_encolada.c 
 
-mini_sh: mini_sh.o 	
+mini_sh: mini_sh.o createD createF showCont listCont eliminateD exit help modPer 	
 	gcc mini_sh.o -lpthread -o exc/mini_sh
 mini_sh.o: src/mini_sh.c	
 	gcc -lpthread -Wall -c src/mini_sh.c src/cmd_mini_sh/*.c
