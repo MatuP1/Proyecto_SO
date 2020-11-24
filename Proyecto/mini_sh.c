@@ -106,7 +106,8 @@ void modificarPermisos(char *nombre, char *modo){
 	
 }
 
-int main(){
+int main(int argc, char* arg[]){
+	pid_t procesoComando;
 	//El tamaño maximo de los comandos es de 20 caracteres al igual que los nombres de archivos o directorios.
 	char action[20];
 	printf("Bienvenido a la Mini Shell de Santiago y Matias, Ingrese sus comandos\n");
@@ -118,7 +119,13 @@ int main(){
 			printf("Escriba el nombre del nuevo directorio\n");
 			char rutaCrear[20];
 			scanf("%s", rutaCrear);
-			crearDirectorio(rutaCrear);
+			procesoComando = fork();
+			if(procesoComando<0)
+				perror("Fallo la creacion del procesoComando");
+			else
+				if(procesoComando == 0)
+					execlp("./createD","./createD",rutaCrear,NULL);
+			//crearDirectorio(rutaCrear);
 		}//Elimina un directorio.
 		else if(strcmp(action, "eliminateD") ==0){
 				char rutaElim[20];
