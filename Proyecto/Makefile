@@ -2,14 +2,17 @@
 all: tareas_abc mini_sh demasiadas_botellas demasiadas_botellas_encoladas\
 	comida_rapida comida_rapida_encolada createD createF listCont showCont modPer\
 	eliminateD help exit
+
 demasiadas_botellas: demasiadas_botellas.o
 	gcc demasiadas_botellas.o  -lpthread -Wall -o exc/demasiadas_botellas
 demasiadas_botellas.o: src/demasiadas_botellas.c
 	gcc -lpthread -Wall -c src/demasiadas_botellas.c 
+
 tareas_abc: tareas_abc.o
 	gcc tareas_abc.o  -lpthread -Wall -o exc/tareas_abc 
 tareas_abc.o: src/tareas_abc.c
 	gcc -lpthread -c src/tareas_abc.c
+
 demasiadas_botellas_encoladas: demasiadas_botellas_encoladas.o
 	gcc demasiadas_botellas_encoladas.o  -lpthread -Wall -o exc/demasiadas_botellas_encoladas
 demasiadas_botellas_encoladas.o: src/demasiadas_botellas_encoladas.c
@@ -69,9 +72,6 @@ showCont: showCont.o
 	gcc showCont.o -lpthread -Wall -o exc/showCont
 showCont.o: src/cmd_mini_sh/showCont.c
 	gcc -lpthread -Wall -c src/cmd_mini_sh/showCont.c
-
-
-
 
 clean:
 	rm -f *.o exc/*
