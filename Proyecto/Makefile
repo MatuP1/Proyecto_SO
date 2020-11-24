@@ -31,7 +31,7 @@ comida_rapida_encolada.o: src/comida_rapida_encolada.c
 mini_sh: mini_sh.o createD createF showCont listCont eliminateD exit help modPer 	
 	gcc mini_sh.o -lpthread -o exc/mini_sh
 mini_sh.o: src/mini_sh.c	
-	gcc -lpthread -Wall -c src/mini_sh.c src/cmd_mini_sh/*.c
+	gcc -lpthread -Wall -c src/mini_sh.c
 
 createD: createD.o
 	gcc createD.o -lpthread -Wall -o exc/createD
@@ -56,17 +56,17 @@ exit.o: src/cmd_mini_sh/exit.c
 modPer: modPer.o
 	gcc modPer.o -lpthread -Wall -o exc/modPer
 modPer.o: src/cmd_mini_sh/modPer.c
-	gcc -lpthread -Wall -c src/cmd_mini_sh/exit.c
+	gcc -lpthread -Wall -c src/cmd_mini_sh/modPer.c
 
 eliminateD: eliminateD.o
-	gcc exit.o -lpthread -Wall -o exc/eliminateD
+	gcc eliminateD.o -lpthread -Wall -o exc/eliminateD
 eliminateD.o: src/cmd_mini_sh/eliminateD.c
 	gcc -lpthread -Wall -c src/cmd_mini_sh/eliminateD.c
 
 listCont: listCont.o
-	gcc exit.o -lpthread -Wall -o exc/listCont
+	gcc listCont.o -lpthread -Wall -o exc/listCont
 listCont.o: src/cmd_mini_sh/listCont.c
-	gcc -lpthread -Wall -c src/cmd_mini_sh/exit.c
+	gcc -lpthread -Wall -c src/cmd_mini_sh/listCont.c
 
 showCont: showCont.o
 	gcc showCont.o -lpthread -Wall -o exc/showCont
