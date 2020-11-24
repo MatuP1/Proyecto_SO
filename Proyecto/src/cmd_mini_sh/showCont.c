@@ -47,7 +47,7 @@ int main(int argc, char* arg[]){
 	printf("Escriba el nombre del archivo del que quiera conocer su contenido. \n");
 	scanf("%s",archivo);
 	mostrarContenido(archivo);
-	
+	printf("\n");
 
 
 	exit(0);

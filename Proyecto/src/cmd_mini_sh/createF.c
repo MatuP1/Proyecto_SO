@@ -17,6 +17,7 @@ void crearArchivo(char *nombre){
 	FILE *fl;
 	fl = fopen(nombre, "w");
 	fclose(fl);
+	printf("Se creo el archivo con el nombre : %s.\n",nombre);
 }
 
 
