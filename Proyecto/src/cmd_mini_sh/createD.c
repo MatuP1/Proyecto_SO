@@ -24,7 +24,7 @@
 void crearDirectorio(char *ruta){
 	//Crea un archivo con los permisos 0777 por defecto, si no es posible crearlo, lo indica con un error.
 	if(mkdir(ruta, 0777)==-1)
-		perror("Ocurrio un error al intentar crear el directorio");
+		perror("Ocurrio un error al intentar crear el directorio.\n");
 	printf("Se creo el directorio con el nombre : %s.\n",ruta);
 		
 }

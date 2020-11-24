@@ -14,7 +14,7 @@
 //Funcion que elimina un directorio
 void eliminarDirectorio(char *ruta){
 	if(rmdir(ruta)==-1)
-		perror("Ocurrio un error al inentar eliminar el directorio");
+		perror("Ocurrio un error al inentar eliminar el directorio.\n");
 }
 
 
@@ -23,8 +23,8 @@ void eliminarDirectorio(char *ruta){
 
 
 int main(int argc, char* arg[]){
-	char rutaElim[20];
 	printf("Escriba el nombre del archivo a eliminar\n");
+	char rutaElim[20];
 	scanf("%s", rutaElim);
 	eliminarDirectorio(rutaElim);
 

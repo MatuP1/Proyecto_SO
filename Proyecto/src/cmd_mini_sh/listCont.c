@@ -20,7 +20,7 @@ void listarContenido(char *nombre){
 		//Recorre el directorio e imprime su contenido por pantalla.
 		puts("Contenido de el directorio");
 		while ((entry = readdir(dir)) !=NULL)
-			printf(" %s\n", entry ->d_name);
+			printf(" %s.\n", entry ->d_name);
 		//Cierra el stream creado anteriormente.
 		closedir(dir);
 		}
