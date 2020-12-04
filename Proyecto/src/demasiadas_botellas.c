@@ -50,14 +50,13 @@ void *companiero(void *C){
 			tiempoActual = time(NULL) - tiempoIn;
 			printf("%i : %s : Hay leche, y toma 1.\n",tiempoActual, nombre);
 			sleep(Tespera);
-			sem_post(&heladera);
 		}	
 		else{//No hay leche
 			tiempoActual = time(NULL) - tiempoIn;
 			printf("%i : %s : No hay leche, fui a comprar.\n",tiempoActual, nombre);
 			comprarLeche(nombre,tiempoIn);
-			sem_post(&heladera);
 		}
+		sem_post(&heladera);
 	}
 }
 
