@@ -30,6 +30,7 @@ void report_and_exit(const char* msg){
 
 
 int main(){
+	pid_t pid = getpid();
 	SMS messSND;
 	SMS messRCV;
 	key_t key = ftok(FILE_PATH, 2);
@@ -45,7 +46,8 @@ int main(){
 	}
 	
 	int tiempoInicial= time(NULL);
-		
+	
+	printf("%li : %i : Desbloqueador de heladera y suministrador de tiempo creado.\n",time(NULL) - tiempoInicial,pid);	
 	while(1){
 		messSND.tiempo = tiempoInicial;
 		messSND.type = HELADERALOCK;

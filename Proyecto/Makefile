@@ -1,5 +1,5 @@
 # -*-Makefile-*-
-all: tareas_abc mini_sh demasiadas_botellas demasiadas_botellas_encoladas\
+all: tareas_abc mini_sh demasiadas_botellas demasiadas_botellas_encoladas companiero\
 	comida_rapida comida_rapida_encolada createD createF listCont showCont modPer\
 	eliminateD help exit
 
@@ -17,6 +17,11 @@ demasiadas_botellas_encoladas: demasiadas_botellas_encoladas.o
 	gcc demasiadas_botellas_encoladas.o  -lpthread -Wall -o exc/demasiadas_botellas_encoladas
 demasiadas_botellas_encoladas.o: src/demasiadas_botellas_encoladas.c
 	gcc -lpthread -Wall -c  src/demasiadas_botellas_encoladas.c
+
+companiero:companiero.o
+	gcc companiero.o -Wall -o exc/companiero
+companiero.o: src/companiero.c
+	gcc -Wall -c src/companiero.c
 
 comida_rapida: comida_rapida.o
 	gcc comida_rapida.o  -lpthread -Wall -o exc/comida_rapida
