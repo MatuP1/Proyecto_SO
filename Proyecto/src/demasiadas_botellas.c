@@ -7,8 +7,8 @@
 #include <string.h>
 #define Tespera 2
 
-sem_t leche;
 sem_t HayLeche;
+sem_t heladera;
 
 struct paramThread {
 	int tim;
@@ -29,6 +29,8 @@ void comprarLeche(char *C, int tiempo){
 	tActual = time(NULL) - tiempo;
 	printf("%i : %s : Llega a la casa; guarda la leche.\n",tActual,C);
 	sem_post(&HayLeche);
+	sem_post(&HayLeche);
+	sem_post(&HayLeche);
 	sleep(Tespera);
 }
 
@@ -41,32 +43,27 @@ void *companiero(void *C){
 	printf("%i : Nacio el compañero %s.\n",tiempoActual,nombre);
 	sleep(Tespera);
 	while(1){
-		if(sem_trywait(&HayLeche)){	
-			printf("%i : %s : Mira el refrigerador...;.\n",tiempoActual,nombre);
-			if(sem_trywait(&leche)){
-				tiempoActual = time(NULL) - tiempoIn;
-				printf("%i : %s : No hay leche, pero otro fue a comprar.\n",tiempoActual, nombre);
-				sleep(Tespera);
-			}
-			else{
-				tiempoActual = time(NULL) - tiempoIn;
-				printf("%i : %s : No hay leche, fui a comprar.\n",tiempoActual, nombre);
-				comprarLeche(nombre,tiempoIn);
-				}
-			}
-		else{
+		sem_wait(&heladera);
+		tiempoActual = time(NULL) - tiempoIn;
+		printf("%i : %s : Mira el refrigerador...;.\n",tiempoActual,nombre);
+		if(!sem_trywait(&HayLeche)){//Hay leche?
+			tiempoActual = time(NULL) - tiempoIn;
 			printf("%i : %s : Hay leche, y toma 1.\n",tiempoActual, nombre);
 			sleep(Tespera);
-			sem_post(&leche);
+			sem_post(&heladera);
 		}	
-	
-	
+		else{//No hay leche
+			tiempoActual = time(NULL) - tiempoIn;
+			printf("%i : %s : No hay leche, fui a comprar.\n",tiempoActual, nombre);
+			comprarLeche(nombre,tiempoIn);
+			sem_post(&heladera);
+		}
 	}
 }
 
 int main(){
-	sem_init(&leche,0,1);
 	sem_init(&HayLeche,0,0);
+	sem_init(&heladera,0,1);
 	pthread_t compa1,compa2;
 		
 	int tiempoInicial;
