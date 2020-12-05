@@ -83,6 +83,7 @@ void cliente(int num_cliente, int queue){
 	printf("Adios Cliente:%i\n",num_cliente);
 	mesa_limpia->type = MESAS_SUCIAS;
 	msgsnd(queue,mesa_limpia,SIZE_MSG,0);
+	exit(1);
 }
 void limpiador(int num_limpiador, int queue){
 	info mesa_sucia = malloc(sizeof(struct message));
@@ -125,12 +126,13 @@ int main(){
 	for (int i=0;i<50;i++){
 			if(pid>0){
 				pid = fork();
+				if(pid == 0){ // estoy en un cliente
+					cliente(getpid()%50,queueID);
+				}
 			}
 	}
-	if(pid == 0){ // estoy en un cliente
-		cliente(getpid()%50,queueID);
-	}
-	else{
+	
+	if(pid>0){
 		for(int i=0;i<3;i++){ //creo los cocineros
 			if(pid>0){
 				pid = fork();
